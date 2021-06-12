@@ -1,0 +1,51 @@
+
+
+
+
+객체를 만들어내는 공장, 설계도 => class
+class를 통해 만들어내는 객체 => object
+
+자바스크립트의 상속
+
+슈퍼객체(super object)가 있고 그 기능을 상속받으면서 기능을 추가하고 싶은 객체를 서브객체(sub object)라고 하면 
+서브객체가 슈퍼객체로부터 직접 상속을 받을 수 있다.
+
+전통적인 주류객체지향언어에서는 클래스가 상속을 받는데, js에서는 객체가 직접 다른 객체의 상속을 받아올 수 있고 , 얼마든지 상속관계를 바꿀 수 있다. a객체에게 상속을 받았는데 b객체로 상속을 받는것으로 바꿀 땐
+그냥 링크(프로토 타입 링크)만 바꿔주면됨
+프로토 타입 링크가 가리키고 있는 객체를 프로토 타입 오브젝트라고도 부른다(위 예시에서는 슈퍼객체가 프로토타입 오브젝트이다.)
+----------------------------------------------
+함수는 js에서는 객체이기 때문에 프로퍼티를 가지며,
+function Person(){}이렇게 표현하던 걸
+var Person = new Function();이렇게도 표현할 수 있다.
+
+<prototype vs prototype>
+
+function Person(){}을 정의하면 
+Person이라고 하는 함수(객체)가 생기고
+Person의 prototype이라고 하는 객체가 하나 더 생긴다. 이 두개의 객체는 서로 연관, 관련되어 있다.
+
+Person객체는 내부적으로 prototype프로퍼티를 가지며 이 prototype프로퍼티는 Person의 prototype객체를 가리킨다. 따라서 Person.prototype이라고 하면 Person의 prototype객체를 가리키는 말이다.
+
+Person의 prototype객체는 Person객체의 소속이라는 것을 표시(기록)하기 위해서 내부에 constructor라고 하는 프로퍼티를 만들고 그 프로퍼티는 Person객체를 가리킨다 
+
+=> 서로간의 상호참조를 한다.
+
+Person.prototype.sum = function(name, first, second){
+  this.name = name;
+  this.first = first;
+  this.second = second;
+}을 정의하면
+Person.prototype은 Person의 prototype프로퍼티를 말하고 이것은 Person의 prototype객체를 가리키므로 Person의 prototype객체내부에 sum이라고하는 객체(프로퍼티)가 생성된다
+
+var kim = new Person('kim', 10, 20)를 정의할때 
+kim객체의 프로퍼티에는 __proto__, name, first, second 가 있고 이 중 __proto__는 자신(객체)을 생성한 Person의 prototype객체를 가리킨다
+
+따라서 우리는 Person.prototype을 이용하여 Person의 prototype객체에 접근할 수 있고, kim.__proto__ 이 방법을 이용하여서도 Person의 prototype객체에 접근할 수도 있다.
+
+만약 kim.name을 콘솔에 출력할때 js는 kim이라는 객체에 name이라고 하는 프로퍼티가 있는지 찾아보고 만약 없다면 __proto__가 가리키는 객체에 name이 있는지 다시 찾아본다.
+kim.sum()을 출력할때도 kim객체에 sum()프로퍼티가 없다면 __proto__가 가리키는 객체에 sum()프로퍼티가 있는지 찾는다.
+
+생활코딩이 만약 Person(함수)의 prototype프로퍼티를 naming한다면 __prototypeObject__로, 각각의 객체(instance)에 생성되는 __proto__를 naming한다면 __prototypeLink__로 변경했을 것이다.
+
+아마 Person의 prototype프로퍼티가 바뀌면 __proto__들도 prototype이 가지는 객체가 바뀌니 같이 값이 바뀔것이다.
+------------------------------------------------
